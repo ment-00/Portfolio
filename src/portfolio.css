@@ -1,0 +1,63 @@
+
+body {
+    background-color: #f5f7fb;
+    color: #273449;
+    font-family: Arial, sans-serif;
+}
+
+.portfolio-navbar {
+    background-color: #17243a;
+}
+
+.page-heading {
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #17243a;
+}
+
+.profile-card {
+    border: none;
+    border-radius: 20px;
+    background-color: white;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+.profile-placeholder {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background-color: #dce7f8;
+    color: #2454a4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 55px;
+    font-weight: bold;
+    margin: auto;
+}
+
+.profile-photo {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+    margin: auto;
+}
+
+.portfolio-card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s;
+}
+
+.portfolio-card:hover {
+    transform: translateY(-5px);
+}
+
+.card-title {
+    font-weight: 700;
+    color: #243b5a;
+}
+
