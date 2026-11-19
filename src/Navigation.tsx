@@ -1,41 +1,81 @@
 
-import { Container, Nav, Navbar } from "react-bootstrap";
-import { NavLink } from "react-router";
+import { useEffect, useState } from 'react'
+import { Navbar, Nav, Container } from 'react-bootstrap'
 
-export default function Navigation() {
-    return (
-        <Navbar expand="lg" bg="dark" variant="dark" sticky="top">
-            <Container>
-                <Navbar.Brand as={NavLink} to="/">
-                    My Portfolio
-                </Navbar.Brand>
+const links = [
+  { id: 'home', label: 'Home' },
+  { id: 'about', label: 'About' },
+  { id: 'projects', label: 'Projects' },
+  { id: 'contact', label: 'Contact' },
+]
 
-                <Navbar.Toggle aria-controls="main-navbar" />
+function Navigation() {
+  const [active, setActive] = useState('home')
+  const [scrolled, setScrolled] = useState(false)
 
-                <Navbar.Collapse id="main-navbar">
-                    <Nav className="ms-auto">
-                        <Nav.Link as={NavLink} to="/">
-                            Home
-                        </Nav.Link>
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActive(entry.target.id)
+          }
+        })
+      },
+      {
+        rootMargin: '-35% 0px -55% 0px',
+      },
+    )
 
-                        <Nav.Link as={NavLink} to="/about">
-                            About
-                        </Nav.Link>
+    links.forEach((link) => {
+      const section = document.getElementById(link.id)
+      if (section) observer.observe(section)
+    })
 
-                        <Nav.Link as={NavLink} to="/projects">
-                            Projects
-                        </Nav.Link>
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 30)
+    }
 
-                        <Nav.Link as={NavLink} to="/skills">
-                            Skills
-                        </Nav.Link>
+    window.addEventListener('scroll', handleScroll, { passive: true })
 
-                        <Nav.Link as={NavLink} to="/contact">
-                            Contact
-                        </Nav.Link>
-                    </Nav>
-                </Navbar.Collapse>
-            </Container>
-        </Navbar>
-    );
+    return () => {
+      observer.disconnect()
+      window.removeEventListener('scroll', handleScroll)
+    }
+  }, [])
+
+  return (
+    <Navbar
+      expand="md"
+      sticky="top"
+      collapseOnSelect
+      className={`site-nav ${scrolled ? 'scrolled' : ''}`}
+    >
+      <Container>
+        <Navbar.Brand href="#home" className="brand">
+          John Clement Navarro
+        </Navbar.Brand>
+
+        <Navbar.Toggle aria-controls="main-nav" />
+
+        <Navbar.Collapse id="main-nav">
+          <Nav className="ms-auto">
+            {links.map((link) => (
+              <Nav.Link
+                key={link.id}
+                href={`#${link.id}`}
+                eventKey={link.id}
+                active={active === link.id}
+                className="nav-item-link"
+              >
+                {link.label}
+              </Nav.Link>
+            ))}
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
+  )
 }
+
+export default Navigation
