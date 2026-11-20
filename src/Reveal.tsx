@@ -8,17 +8,23 @@ function Reveal({ children, delay = 0 }: { children: ReactNode; delay?: number }
   useEffect(() => {
     const el = ref.current
     if (!el) return
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setShown(true)
-          io.disconnect()
-        }
-      },
-      { threshold: 0.12 },
-    )
-    io.observe(el)
-    return () => io.disconnect()
+
+    function stop() {
+      window.removeEventListener('scroll', check)
+      window.removeEventListener('resize', check)
+    }
+
+    function check() {
+      if (el && el.getBoundingClientRect().top < window.innerHeight * 0.95) {
+        setShown(true)
+        stop()
+      }
+    }
+
+    window.addEventListener('scroll', check, { passive: true })
+    window.addEventListener('resize', check)
+    check()
+    return stop
   }, [])
 
   return (
