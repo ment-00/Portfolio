@@ -187,9 +187,17 @@ main { flex: 1; }
 .section { max-width: 1000px; margin: 0 auto; padding: 88px 20px; }
 .section-title { font-weight: 800; font-size: clamp(1.8rem, 4vw, 2.4rem); margin-bottom: 32px; }
 .section-title::after {
-  content: ''; display: block; height: 3px; width: 0; margin-top: 10px; border-radius: 3px;
-  background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width 0.8s 0.25s ease;
+  content: ''; display: block; height: 3px; width: 56px; margin-top: 10px; border-radius: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
 }
+
+/* Scroll reveal: content is always visible, supported browsers add a fade-in */
+.reveal { height: 100%; }
+.reveal > .card { height: 100%; }
+@supports (animation-timeline: view()) {
+  .reveal { animation: reveal-in linear both; animation-timeline: view(); animation-range: entry 0% entry 35%; }
+}
+@keyframes reveal-in { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
 .in .section-title::after { width: 56px; }
 
 /* Scroll reveal */
